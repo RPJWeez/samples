@@ -13,19 +13,21 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
 /**
- *
- * @author pauli
+ * This is a Hello World API that demonstrates a secured resource
+ * 
+ * @author PI
  */
 @Path("hello")
 @DenyAll
 public class SampleResource {
     
-    @Inject
-    private SecurityContext securityContext;
+    //TODO no impl to inject so this is null.. Maybe a Payara/Glassfish problem?
+    //@Inject
+    //private SecurityContext securityContext;
     
     @GET
     @RolesAllowed({"foo"})
     public String hello() {
-        return "Hello, " + securityContext.isCallerInRole("foo");
+        return "Hello, "; //+ securityContext.getCallerPrincipal();
     }
 }

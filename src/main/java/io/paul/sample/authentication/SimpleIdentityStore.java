@@ -9,6 +9,7 @@ import static java.util.Arrays.asList;
 import java.util.HashSet;
 import java.util.Set;
 import javax.enterprise.context.ApplicationScoped;
+import javax.security.enterprise.CallerPrincipal;
 import javax.security.enterprise.credential.CallerOnlyCredential;
 import javax.security.enterprise.credential.Credential;
 import javax.security.enterprise.credential.UsernamePasswordCredential;
@@ -17,22 +18,26 @@ import static javax.security.enterprise.identitystore.CredentialValidationResult
 import javax.security.enterprise.identitystore.IdentityStore;
 
 /**
+ * This is a simple IdentityStore to try out the features of JSR375. It
+ * validates that the credentials match the hard coded "correct" credentials,
+ * then assigns a "foo" role to the user.
  *
- * @author pauli
+ * @author PI
  */
 @ApplicationScoped
-public class SimpleIdentityStore implements IdentityStore{
+public class SimpleIdentityStore implements IdentityStore {
+
     @Override
     public CredentialValidationResult validate(Credential credential) {
         System.out.println("io.paul.sample.authentication.SimpleIdentityStore.validate()");
         UsernamePasswordCredential uCredential = (UsernamePasswordCredential) credential;
-        
+
         if (uCredential.compareTo("paul", "secret")) {
-        
-           return new CredentialValidationResult("paul",new HashSet<>(asList("foo")));
+            CallerPrincipal callerPrincipal = new CallerPrincipal("paul");
+            return new CredentialValidationResult(callerPrincipal, new HashSet<>(asList("foo")));
         }
 
         return INVALID_RESULT;
     }
-    
+
 }
