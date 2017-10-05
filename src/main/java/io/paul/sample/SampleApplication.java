@@ -13,7 +13,7 @@ import javax.ws.rs.core.Application;
 
 /**
  *
- * @author pauli
+ * @author PI
  */
 @ApplicationPath("")
 @DeclareRoles({"foo"})
